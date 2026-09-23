@@ -1,0 +1,11 @@
+{
+  "name": "DPI Hôpital",
+  "install": "npm ci && npx prisma generate && npx prisma migrate deploy && npx prisma db seed",
+  "terminals": [
+    {
+      "name": "next-dev",
+      "command": "npm run dev"
+    }
+  ],
+  "ports": [3000]
+}
