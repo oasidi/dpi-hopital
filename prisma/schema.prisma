@@ -1,0 +1,39 @@
+// Dossier Patient Informatisé (DPI) - data model
+// SQLite keeps the environment fully self-contained (no external DB service).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Patient {
+  id            String         @id @default(cuid())
+  numeroDossier String         @unique
+  nom           String
+  prenom        String
+  dateNaissance DateTime
+  // "HOMME" | "FEMME" (SQLite does not support native enums)
+  sexe          String
+  telephone     String?
+  adresse       String?
+  groupeSanguin String?
+  consultations Consultation[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model Consultation {
+  id         String   @id @default(cuid())
+  patient    Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  patientId  String
+  date       DateTime @default(now())
+  motif      String
+  diagnostic String?
+  traitement String?
+  medecin    String
+  createdAt  DateTime @default(now())
+}
